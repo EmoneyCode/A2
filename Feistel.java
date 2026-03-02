@@ -29,9 +29,22 @@ class Feistel
      */
     int[] encrypt(int[] block)
     {
-        /* to be completed */
+        int[] left = Arrays.copyOfRange(block, 0, w);
+        int[] right = Arrays.copyOfRange(block, w, w*2);
+        int[] temp; //assists with swaps
 
-        return null; // here to please the compiler
+        for(int i = 0; i < n; i++){
+            temp = right;
+            right = Utils.XOR(left, F.round(right, K[i + 1]));
+            left = temp;
+        }
+
+        int[] ciphertext = new int[w*2];
+
+        System.arraycopy(right, 0, ciphertext, 0, w);
+        System.arraycopy(left, 0, ciphertext, w, w);
+
+        return ciphertext; // here to please the compiler
     }// encrypt method
 
     /* given a 2w-bit vector of encrypted ciphertext, return the 2w-bit 
@@ -39,9 +52,21 @@ class Feistel
      */
     int[] decrypt(int[] block)
     {
-        /* to be completed */
+        int[][] reversedKeys = new int[K.length][K[1].length];
+
+        for(int i = 1; i < K.length; i++){
+            reversedKeys[i] = K[K.length - i];
+        }
         
-        return null; // here to please the compiler     
+        int[][] tempK = K; //saves K
+
+        K = reversedKeys;
+
+        int[] plaintext = encrypt(block);
+
+        K = tempK; //Resets K
+        
+        return plaintext;    
     }// decrypt method
 
     /* I will use this driver code to test your program. Do not modify it.

@@ -116,9 +116,16 @@ class Utils
     */
     static String binStringToHex(String bits)
     {
-        int interger = Integer.parseInt(bits, 2);
+        String hex = "";
 
-        String hex = Integer.toHexString(interger);
+        for(int i = 0; i < bits.length(); i += 4){
+
+            int interger = Integer.parseInt(bits.substring(i, i + 4), 2);
+
+            hex += Integer.toHexString(interger);
+
+        }
+        
 
         return hex; // only here to please the compiler
     }// binStringToHex method
