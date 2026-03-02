@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 /*****************************************************
    CS 326 - Spring 2026 - Assignment #2
 
@@ -17,8 +19,12 @@ class Utils
      */
     static String textToHex(String s)
     {
-        /* to be completed */
-        return ""; // only here to please the compiler
+        String hexText = "";
+        for(int i = 0; i < s.length(); i++){
+            int intVal = (int) s.charAt(i);
+            hexText += Integer.toHexString(intVal);
+        }
+        return hexText;
         
     }// textToHex method
 
@@ -30,9 +36,17 @@ class Utils
      */
     static String hexToText(String s)
     {
-        /* to be completed */
+        String text = "";
+        int count = 0;
+        while(count < s.length()){
+            String hex = "";
+            hex += s.charAt(count);
+            hex += s.charAt(count + 1);
+            text += (char) Integer.parseInt(hex, 16);
+            count +=2;
+        }
 
-        return ""; // only here to please the compiler
+        return text;
     }// hexTotext method
 
     /* given a binary string, return the integer array of the same length as
@@ -42,9 +56,15 @@ class Utils
     */
     static int[] binStringToIntArray(String bits)
     {
-        /* to be completed */
+        int[] arr = new int[bits.length()];
+
+        for(int i = 0; i < bits.length(); i++){
+
+            arr[i] = Character.getNumericValue(bits.charAt(i));
+
+        }
         
-        return null; // only here to please the compiler
+        return arr;
     }// bitStringToIntArray method
 
     /* given an integer array containing 0s and 1s exclusively, return
@@ -54,9 +74,15 @@ class Utils
     */
     static String intArrayToBinString(int[] data)
     {
-        /* to be completed */
+        String bits = "";
 
-        return ""; // only here to please the compiler
+        for(int i = 0; i < data.length; i++){
+
+            bits += data[i];
+
+        }
+
+        return bits; // only here to please the compiler
     }//intArrayToBinString method
     
     /* given an arbitrary long string of hexadecimal digits and a number 
@@ -69,9 +95,18 @@ class Utils
      */
     static String hexToBinString(String s, int numBits)
     {
-        /* to be completed */
+        int integer = Integer.parseInt(s, 16);
+        String bits = Integer.toBinaryString(integer);
+        String leadingZeros = "";
 
-        return ""; // only here to please the compiler
+        for(int i = 0; i < numBits - bits.length(); i++){
+
+            leadingZeros += '0';
+
+        }
+        
+
+        return leadingZeros + bits;
     }// hexToBinString method
 
     /* given a binary string, return the hexadecimal representation of the
@@ -81,9 +116,11 @@ class Utils
     */
     static String binStringToHex(String bits)
     {
-        /* to be completed */
+        int interger = Integer.parseInt(bits, 2);
 
-        return ""; // only here to please the compiler
+        String hex = Integer.toHexString(interger);
+
+        return hex; // only here to please the compiler
     }// binStringToHex method
 
     
@@ -94,9 +131,16 @@ class Utils
      */
     static int[] XOR(int[] a, int[] b)
     {
-        /* to be completed */
+        int[] c = new int[a.length];
+        for(int i = 0; i < a.length; i++){
+            if(a[i] + b[i] == 1){
+                c[i] = 1;
+            } else {
+                c[i] = 0;
+            }
+        }
         
-        return null; // only here to please the compiler
+        return c;
     }// XOR method
 
     /* given an n-long permutation of bit positions ranging from 1 to m  and 
@@ -110,9 +154,10 @@ class Utils
      */
     static int[] applyPermut(int[] perm, int[] data)
     {
-        /* to be completed */
-
-        return null; // only here to please the compiler
+        for(int i = 0; i < perm.length; i++){
+            perm[i] = data[perm[i] - 1];
+        }
+        return perm;
     }// applyPermut method
 
 }// class Utils
