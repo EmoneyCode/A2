@@ -140,6 +140,8 @@ class ComputeSubKeys
 
                 if(j != 47){
                     System.out.print(",");
+                }else if(i != 16){
+                    System.out.println("},");
                 }else{
                     System.out.println("}");
                 }
