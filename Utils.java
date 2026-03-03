@@ -22,7 +22,12 @@ class Utils
         String hexText = "";
         for(int i = 0; i < s.length(); i++){
             int intVal = (int) s.charAt(i);
-            hexText += Integer.toHexString(intVal);
+            String hexSeg = Integer.toHexString(intVal).toUpperCase();
+            //adds leading zero
+            if(hexSeg.length() < 2){
+                hexSeg = '0' + hexSeg;
+            }
+            hexText += hexSeg;
         }
         return hexText;
         
@@ -95,18 +100,29 @@ class Utils
      */
     static String hexToBinString(String s, int numBits)
     {
-        int integer = Integer.parseInt(s, 16);
-        String bits = Integer.toBinaryString(integer);
-        String leadingZeros = "";
+        String bits = "";
+        int count = 0;
+        while(count < s.length()){
+            String hex = "";
+            hex += s.charAt(count);
+            hex += s.charAt(count + 1);
+            String pairBits = Integer.toBinaryString(Integer.parseInt(hex, 16));
+            String leadingZeros = "";
 
-        for(int i = 0; i < numBits - bits.length(); i++){
+            for(int i = 0; i < 8 - pairBits.length(); i++){
 
-            leadingZeros += '0';
+                leadingZeros += '0';
 
+            }
+
+            bits += leadingZeros + pairBits;
+            count +=2;
         }
+
+        
         
 
-        return leadingZeros + bits;
+        return bits;
     }// hexToBinString method
 
     /* given a binary string, return the hexadecimal representation of the
@@ -122,7 +138,7 @@ class Utils
 
             int interger = Integer.parseInt(bits.substring(i, i + 4), 2);
 
-            hex += Integer.toHexString(interger);
+            hex += Integer.toHexString(interger).toUpperCase();
 
         }
         
@@ -161,10 +177,11 @@ class Utils
      */
     static int[] applyPermut(int[] perm, int[] data)
     {
+        int[] permutated = new int[perm.length];
         for(int i = 0; i < perm.length; i++){
-            perm[i] = data[perm[i] - 1];
+            permutated[i] = data[perm[i] - 1];
         }
-        return perm;
+        return permutated;
     }// applyPermut method
 
 }// class Utils

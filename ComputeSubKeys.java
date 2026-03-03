@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 /*****************************************************
    CS 326 - Spring 2026 - Assignment #2
 
@@ -110,14 +112,14 @@ class ComputeSubKeys
         int[][] ks = new int[17][48];
         System.out.println("int[][] ks = {");
         System.out.println("  {},");
-        int[] c = PC1c;
+        int[] c = Arrays.copyOf(PC1c, PC1c.length);
 
-        int[] d = PC1d;
+        int[] d = Arrays.copyOf(PC1d, PC1d.length);
         //loops through 16 rounds
         for(int i = 1; i < 17; i++){
             System.out.print("  {");
             //shifts
-            if(i == 1 | i == 2 | i == 9 | i == 16){
+            if(i == 1 || i == 2 || i == 9 || i == 16){
                 c = shiftLeftBy1(c);
                 d = shiftLeftBy1(d);
             } else {

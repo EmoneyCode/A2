@@ -10,7 +10,7 @@
 class DES extends Feistel
 {
    
-    int[][] ks = {
+    static int[][] ks = {
         {},
         {10,51,34,60,49,17,33,57,2,9,19,42,3,35,26,25,44,58,59,1,36,27,18,41,
          22,28,39,54,37,4,47,30,5,53,23,29,61,21,38,63,15,20,45,14,13,62,55,31},
@@ -81,8 +81,18 @@ class DES extends Feistel
      */
     static int[][] getSubKeys(String keyHex)
     {
-        /* to be completed */
-        return null; // here to please the compiler
+        int[] bitArr = new int[64];
+        String bits = Utils.hexToBinString(keyHex, 64);
+        for(int i = 0; i < 64; i++){
+            bitArr[i] = bits.charAt(i) - '0';
+        }
+
+        int[][] subKeys = new int[17][48];
+        for(int i = 1; i < 17; i++){
+            subKeys[i] = Utils.applyPermut(ks[i], bitArr);
+        }
+
+        return subKeys;
     }// getSubKeys method
 
     /* given a 64-bit vector of plaintext, return the 64-bit DES-encrypted 
@@ -91,8 +101,9 @@ class DES extends Feistel
      */
     int[] encryptDES(int[] block)
     {
-        /* to be completed */
-        return null; // here to please the compiler
+        block = Utils.applyPermut(IP, block);
+        block = super.encrypt(block);
+        return Utils.applyPermut(IPinv, block);
     }// encryptDES method
 
     /* given a 64-bit vector of DES-encrypted ciphertext, return the 64-bit 
@@ -101,8 +112,10 @@ class DES extends Feistel
      */
     int[] decryptDES(int[] block)
     {
-        /* to be completed */
-        return null; // here to please the compiler
+        
+        block = Utils.applyPermut(IP, block);
+        block = super.decrypt(block);
+        return Utils.applyPermut(IPinv, block);
     }// decryptDES method
 
 }// DES class
@@ -189,10 +202,8 @@ class DESround  extends FeistelFunction
 
         for(int i = 1; i < 9; i++){
             //seperates row and col indicators
-            String rowBits = "";
-            String colBits = "";
-            rowBits += data[(i-1)*6] + data[(i-1)*6 + 5];
-            colBits += data[(i-1)*6 + 1] + data[(i-1)*6 + 2] + data[(i-1)*6 + 3] + data[(i-1)*6 + 4];
+            String rowBits = "" + data[(i-1)*6] + data[(i-1)*6 + 5];
+            String colBits = "" + data[(i-1)*6 + 1] + data[(i-1)*6 + 2] + data[(i-1)*6 + 3] + data[(i-1)*6 + 4];
             
             //convert bits to integers
             int row = Integer.parseInt(rowBits, 2);
