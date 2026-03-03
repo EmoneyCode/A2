@@ -45,8 +45,13 @@ class ComputeSubKeys
     */
     static int[] shiftLeftBy1(int[] data)
     {
-        /* to be completed */
-        return null; // here to please the compiler
+        int[] shifted = new int[data.length];
+        //copies all digits of data into shifted but the first
+        System.arraycopy(data, 1, shifted, 0, data.length - 1);
+        //places first elem of data on end of shifted
+        shifted[data.length - 1] = data[0];
+        
+        return shifted;
     }// shiftLeftBy1 method
 
     /* return the bit vector obtained by applying a cyclic rotation
@@ -57,8 +62,7 @@ class ComputeSubKeys
     */
     static int[] shiftLeftBy2(int[] data)
     {
-        /* to be completed */
-        return null; // here to please the compiler
+        return shiftLeftBy1(shiftLeftBy1(data));
     }// shiftLeftBy2 method
 
     /* sends to the output stream a Java declaration for the 17x48 2D array
@@ -103,7 +107,49 @@ class ComputeSubKeys
     static void outputHardwiredSchedule()
     {
 
-        /* to be completed */
+        int[][] ks = new int[17][48];
+        System.out.println("int[][] ks = {");
+        System.out.println("  {},");
+        int[] c = PC1c;
+
+        int[] d = PC1d;
+        //loops through 16 rounds
+        for(int i = 1; i < 17; i++){
+            System.out.print("  {");
+            //shifts
+            if(i == 1 | i == 2 | i == 9 | i == 16){
+                c = shiftLeftBy1(c);
+                d = shiftLeftBy1(d);
+            } else {
+                c = shiftLeftBy2(c);
+                d = shiftLeftBy2(d);
+            }
+
+            int[] key = new int[48];
+
+            //iterates through PC2 creating key
+            for(int j = 0; j < 48; j++){
+                int pos = PC2[j] - 1; //gets position of bit in CD 
+
+                if(pos < 28){
+                    key[j] = c[pos];
+                }else{
+                    key[j] = d[pos - 28];
+                }
+                System.out.print(key[j]);
+
+                if(j != 47){
+                    System.out.print(",");
+                }else{
+                    System.out.println("}");
+                }
+            }
+
+            //adds key to key schedule
+            ks[i] = key;
+
+        }
+        System.out.println("};");
 
     }// outputHardwiredSchedule method
 
